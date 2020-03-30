@@ -6,7 +6,7 @@ import name
 import  find_skills
 
 
-nlp = spacy.load('en_core_web_sm')
+nlp = spacy.load('en_core_web_md')
 matcher = Matcher(nlp.vocab)
 
 text = read_file.docs_to_text('/home/shubham/projects/cvparser/resumes/docs/2.doc')
