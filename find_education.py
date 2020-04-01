@@ -1,42 +1,25 @@
-import re
-import spacy
-from nltk.corpus import stopwords
+import pandas as pd
 
-# load pre-trained model
-nlp = spacy.load('en_core_web_sm')
+education = pd.read_csv('/home/shubham/projects/cvparser/education2.csv')
+education = education.Qualifications.to_list()
 
-# Grad all general stop words
-STOPWORDS = set(stopwords.words('english'))
+education = map(lambda x: x.lower(), education)
 
-# Education Degrees
-EDUCATION = [
-            'BE','B.E.', 'B.E', 'BS', 'B.S',
-            'ME', 'M.E', 'M.E.', 'MS', 'M.S',
-            'BTECH', 'B.TECH', 'M.TECH', 'MTECH',
-            'SSC', 'HSC', 'CBSE', 'ICSE', 'X', 'XII'
-        ]
+
+def rep(x):
+    x = x.replace('(', 'in ')
+    x = x.replace(')', '')
+    return x
+
+
+education = map(rep, education)
+
+education = list(education)
+
 
 def extract_education(resume_text):
-    nlp_text = nlp(resume_text)
-
-    # Sentence Tokenizer
-    nlp_text = [sent.string.strip() for sent in nlp_text.sents]
-
-    edu = {}
-    # Extract education degree
-    for index, text in enumerate(nlp_text):
-        for tex in text.split():
-            # Replace all special symbols
-            tex = re.sub(r'[?|$|.|!|,]', r'', tex)
-            if tex.upper() in EDUCATION and tex not in STOPWORDS:
-                edu[tex] = text + nlp_text[index + 1]
-
-    # Extract year
-    education = []
-    for key in edu.keys():
-        year = re.search(re.compile(r'(((20|19)(\d{2})))'), edu[key])
-        if year:
-            education.append((key, ''.join(year[0])))
-        else:
-            education.append(key)
-    return education
+    edu_list = []
+    for i in education:
+        if i.lower() in resume_text:
+            edu_list.append(i)
+    return edu_list

@@ -1,4 +1,4 @@
-def extract_name(resume_text,nlp,matcher):
+def extract_name(resume_text, nlp, matcher):
     nlp_text = nlp(resume_text)
 
     # First name and Last name are always Proper Nouns
