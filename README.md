@@ -8,4 +8,4 @@ Change education.csv path in find_education.csv
 
 Run Main.py
 
-![output](output.png) 
+![output](output1.png) 
